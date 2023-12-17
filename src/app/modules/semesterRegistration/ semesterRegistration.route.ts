@@ -2,8 +2,7 @@ import express from 'express';
 import { semesterRegistrationController } from './ semesterRegistration.controller';
 import { validateRequest } from '../../middlewares/validateRequest';
 import { SemesterRegistrationValidations } from './semesterRegistration.validation';
-// import { SemesterRegistrationController } from './semesterRegistration.controller';
-// import { SemesterRegistrationValidations } from './semesterRegistration.validation';
+
 
 const router = express.Router();
 
@@ -16,13 +15,13 @@ router.post(
 );
 
 
-// router.patch(
-//   '/:id',
-//   validateRequest(
-//     SemesterRegistrationValidations.upadateSemesterRegistrationValidationSchema,
-//   ),
-//   SemesterRegistrationController.updateSemesterRegistration,
-// );
+router.patch(
+  '/:id',
+  validateRequest(
+    SemesterRegistrationValidations.upadateSemesterRegistrationValidationSchema,
+  ),
+  semesterRegistrationController.updateSemesterRegistration,
+);
 
 router.get(
   '/:id',
