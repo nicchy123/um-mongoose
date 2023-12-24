@@ -22,7 +22,7 @@ export const auth = (...requiredRoles: TUserRole[]) => {
     ) as JwtPayload;
 
     const { role, userId, iat } = decoded;
-    console.log(role, userId, iat);
+
 
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
