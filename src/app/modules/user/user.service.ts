@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import config from '../../config';
 import AppError from '../../errors/AppError';
 import { TStudent } from '../student/student.interface';
@@ -42,6 +42,16 @@ const createStudentIntoDB = async (
   const admissionSemester = await AcademicSemester.findById(
     payload.admissionSemester,
   );
+  const academicDepartment = await AcademicDepartment.findById(
+    payload.academicDepartment,
+  );
+
+  if (!admissionSemester) {
+    throw new AppError(400, 'Academic  department not found');
+  }
+  if (academicDepartment) {
+    payload.academicFaculty = academicDepartment?.academicFaculty;
+  }
 
   if (!admissionSemester) {
     throw new AppError(400, 'Admission semester not found');
@@ -57,7 +67,10 @@ const createStudentIntoDB = async (
     const imageName = `${userData.id}${payload?.name?.firstName}`;
     const path = file?.path;
     //send image to cloudinary
-    const { secure_url } = await sendImageToCloudinary(imageName, path) as any;
+    const { secure_url } = (await sendImageToCloudinary(
+      imageName,
+      path,
+    )) as any;
 
     // create a user (transaction-1)
     const newUser = await User.create([userData], { session }); // array

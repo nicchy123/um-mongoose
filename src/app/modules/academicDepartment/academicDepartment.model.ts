@@ -45,7 +45,6 @@ academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
       'This department does not exist! ',
     );
   }
-
   next();
 });
 

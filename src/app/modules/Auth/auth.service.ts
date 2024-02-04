@@ -7,12 +7,12 @@ import { createToken, verifyToken } from './auth.utils';
 import { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { sendEmail } from '../../utils/sendEmail';
-
+import  jwt  from 'jsonwebtoken';
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsByCustomId(payload.id);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-  }
+    if (!user) {
+      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+    }
   if (!(await User.isPasswordMatched(payload.password, user.password))) {
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
   }
@@ -55,6 +55,7 @@ const loginUser = async (payload: TLoginUser) => {
     needsPasswordChange: user?.needsPasswordChange,
   };
 };
+
 const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
